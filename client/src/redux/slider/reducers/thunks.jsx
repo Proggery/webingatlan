@@ -1,4 +1,4 @@
-import DataService from "../../services/userService";
+import DataService from "../../services/sliderService";
 import actions from "../actions/action";
 
 const messageTimer = 2800;

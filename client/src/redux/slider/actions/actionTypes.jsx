@@ -1,0 +1,5 @@
+export const GET_DATA= "GET_SLIDER"
+export const CREATE_DATA= "CREATE_SLIDER"
+export const UPDATE_DATA= "UPDATE_SLIDER"
+export const DELETE_DATA= "DELETE_SLIDER_IMG"
+export const MESSAGE = "SLIDER_MESSAGE";

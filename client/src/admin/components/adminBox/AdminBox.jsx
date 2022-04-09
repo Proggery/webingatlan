@@ -41,7 +41,6 @@ const Account = () => {
 
   useEffect(() => {
     if (getData) {
-      console.log(getData);
       setData({
         ...data,
         adminFirstname: getData.firstname,

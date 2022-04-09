@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 30% auto;
     gap: 4rem;
-    grid-template-areas: "headerBox shareBox shareBox";
+    grid-template-areas: "headerBox shareBox";
 
     .header__box__item {
       grid-area: headerBox;

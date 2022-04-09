@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const loginRouter = require("./routers/loginRouter");
 const adminRouter = require("./routers/adminRouter");
 const uploadFileRouter = require("./routers/uploadFileRouter");
-const userRouter = require("./routers/userRouter");
+const sliderRouter = require("./routers/sliderRouter");
 
 require("dotenv").config();
 
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static("uploads"));
 
 app.use("", uploadFileRouter);
-app.use("", userRouter);
+app.use("", sliderRouter);
 app.use("", adminRouter);
 app.use("", loginRouter);
 

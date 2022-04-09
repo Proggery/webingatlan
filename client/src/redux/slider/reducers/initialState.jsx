@@ -1,6 +1,6 @@
 const initialState = () => {
   return {
-    getData: {},
+    getData: [],
     message: {},
   };
 };

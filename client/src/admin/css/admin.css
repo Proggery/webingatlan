@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 30% auto;
   gap: 4rem;
-  grid-template-areas: "headerBox shareBox shareBox";
+  grid-template-areas: "headerBox shareBox";
 }
 
 #admin .admin__content .header__box__item {

@@ -1,0 +1,35 @@
+#admin .admin__content {
+  display: grid;
+  grid-template-columns: 30% auto;
+  gap: 4rem;
+  grid-template-areas: "headerBox shareBox shareBox";
+}
+
+#admin .admin__content .header__box__item {
+  grid-area: headerBox;
+}
+
+#admin .admin__content .share__box__item {
+  grid-area: shareBox;
+}
+
+#admin .admin__content .configBox .configBox__header {
+  text-align: center;
+}
+
+#admin .admin__content .configBox .configBox__message {
+  padding: 1rem 0;
+  line-height: 0;
+}
+
+#admin .admin__content .configBox .configBox__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+#admin .admin__content .configBox .configBox__content .textInput {
+  width: 100%;
+}
+/*# sourceMappingURL=admin.css.map */

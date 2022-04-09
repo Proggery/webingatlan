@@ -1,0 +1,30 @@
+#home__carousel {
+  position: relative;
+}
+
+#home__carousel .img__frame::before {
+  content: "";
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+#home__carousel .carousel__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#home__carousel .carousel__text h3 {
+  text-align: center;
+}
+/*# sourceMappingURL=carousel.css.map */

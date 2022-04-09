@@ -64,7 +64,7 @@ const About = () => {
             <img
               className="position-absolute w-100 h-100 mt-5 ms-n5"
               src={about}
-              style={{"object-fit": "cover"}}
+              style={{"objectFit": "cover"}}
             />
           </div>
         </div>

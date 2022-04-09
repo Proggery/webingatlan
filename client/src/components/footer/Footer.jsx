@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadGetData } from "../../redux/admin/reducers/thunks";
 
 const Footer = () => {
+  const dispatch = useDispatch();
+  const { getData } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(loadGetData());
+  }, []);
+
   return (
     <div>
       <div className="footer container-fluid position-relative bg-dark bg-light-radial text-white-50 py-6 px-5">
         <div className="row g-5">
           <div className="col-lg-6 pe-lg-5">
             <a href="index.html" className="navbar-brand">
-              <h1 className="m-0 display-4 text-uppercase text-white">
-                <i className="bi bi-building text-primary me-2"></i>WEBUILD
-              </h1>
+              <h3 className="m-0 display-4 text-uppercase text-white">
+                <i className="bi bi-building text-primary me-2"></i>
+                {getData && getData.company}
+              </h3>
             </a>
             <p>
               Aliquyam sed elitr elitr erat sed diam ipsum eirmod eos lorem
@@ -17,13 +27,16 @@ const Footer = () => {
               erat dolore sed stet justo et dolor.
             </p>
             <p>
-              <i className="fa fa-map-marker-alt me-2"></i>123 Street, New York, USA
+              <i className="fa fa-map-marker-alt me-2"></i>
+              {getData && getData.address}
             </p>
             <p>
-              <i className="fa fa-phone-alt me-2"></i>+012 345 67890
+              <i className="fa fa-phone-alt me-2"></i>
+              {getData && getData.phone}
             </p>
             <p>
-              <i className="fa fa-envelope me-2"></i>info@example.com
+              <i className="fa fa-envelope me-2"></i>
+              {getData && getData.email}
             </p>
             <div className="d-flex justify-content-start mt-4">
               <a

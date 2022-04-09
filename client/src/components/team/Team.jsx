@@ -21,7 +21,7 @@ const Team = () => {
                 <img
                   className="position-absolute w-100 h-100"
                   src={team1}
-                  style={{ "object-fit": "cover" }}
+                  style={{ "objectFit": "cover" }}
                 />
               </div>
             </div>
@@ -59,7 +59,7 @@ const Team = () => {
                 <img
                   className="position-absolute w-100 h-100"
                   src={team2}
-                  style={{ "object-fit": "cover" }}
+                  style={{ "objectFit": "cover" }}
                 />
               </div>
             </div>
@@ -97,7 +97,7 @@ const Team = () => {
                 <img
                   className="position-absolute w-100 h-100"
                   src={team3}
-                  style={{ "object-fit": "cover" }}
+                  style={{ "objectFit": "cover" }}
                 />
               </div>
             </div>
@@ -135,7 +135,7 @@ const Team = () => {
                 <img
                   className="position-absolute w-100 h-100"
                   src={team4}
-                  style={{ "object-fit": "cover" }}
+                  style={{ "objectFit": "cover" }}
                 />
               </div>
             </div>

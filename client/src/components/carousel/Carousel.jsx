@@ -35,11 +35,11 @@ const Carousel = () => {
           <img src={carousel2} alt="" />
         </div>
         <div className="carousel__text">
-          <i class="fa fa-tools fa-4x text-primary mb-4 d-none d-sm-block"></i>
-          <h3 class="display-2 text-uppercase text-white mb-md-4">
+          <i className="fa fa-tools fa-4x text-primary mb-4 d-none d-sm-block"></i>
+          <h3 className="display-2 text-uppercase text-white mb-md-4">
             We Are Trusted For Your Project
           </h3>
-          <Link to="#" class="btn btn-primary py-md-3 px-md-5 mt-2">
+          <Link to="#" className="btn btn-primary py-md-3 px-md-5 mt-2">
             Contact Us
           </Link>
         </div>

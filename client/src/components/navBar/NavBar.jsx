@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loadGetData } from "../../redux/admin/reducers/thunks";
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const { getData } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(loadGetData());
+  }, []);
+
   return (
     <div className="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
       <nav className="navbar navbar-expand-lg bg-dark bg-light-radial navbar-dark py-3 py-lg-0">
         <Link to="/" className="navbar-brand">
-          <h1 className="m-0 display-4 text-uppercase text-white">
-            <i className="bi bi-building text-primary me-2"></i>WEB INGATLAN
-          </h1>
+          <h3 className="m-0 display-4 text-uppercase text-white">
+            <i className="bi bi-building text-primary me-2"></i>
+            {getData && getData.company}
+          </h3>
         </Link>
         <button
           className="navbar-toggler"

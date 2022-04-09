@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadGetData } from "../../redux/admin/reducers/thunks";
 
 const TopBar = () => {
+  const dispatch = useDispatch();
+  const { getData } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(loadGetData());
+  }, []);
+
   return (
     <div className="container-fluid px-5 d-none d-lg-block">
       <div className="row gx-5">
@@ -8,8 +17,8 @@ const TopBar = () => {
           <div className="d-inline-flex align-items-center">
             <i className="bi bi-geo-alt fs-1 text-primary me-3"></i>
             <div className="text-start">
-              <h6 className="text-uppercase fw-bold">Our Office</h6>
-              <span>123 Street, New York, USA</span>
+              <h6 className="text-uppercase fw-bold">cég székhelye</h6>
+              <span>{getData && getData.address}</span>
             </div>
           </div>
         </div>
@@ -17,8 +26,8 @@ const TopBar = () => {
           <div className="d-inline-flex align-items-center">
             <i className="bi bi-envelope-open fs-1 text-primary me-3"></i>
             <div className="text-start">
-              <h6 className="text-uppercase fw-bold">Email Us</h6>
-              <span>info@example.com</span>
+              <h6 className="text-uppercase fw-bold">e-mail cím</h6>
+              <span>{getData && getData.email}</span>
             </div>
           </div>
         </div>
@@ -26,8 +35,8 @@ const TopBar = () => {
           <div className="d-inline-flex align-items-center">
             <i className="bi bi-phone-vibrate fs-1 text-primary me-3"></i>
             <div className="text-start">
-              <h6 className="text-uppercase fw-bold">Call Us</h6>
-              <span>+012 345 6789</span>
+              <h6 className="text-uppercase fw-bold">Telefonszám</h6>
+              <span>{getData && getData.phone}</span>
             </div>
           </div>
         </div>

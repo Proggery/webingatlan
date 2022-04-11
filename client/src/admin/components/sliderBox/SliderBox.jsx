@@ -13,11 +13,11 @@ import {
   loadGetData,
   loadCreateData,
   loadUpdateData,
-  loadDeleteData,
+  loadDeleteDataImg,
 } from "../../../redux/slider/reducers/thunks";
 import {
-  sliderTitleProps,
-  sliderImageAltProps,
+  titleProps,
+  altProps,
   submitBtnProps,
   updateBtnProps,
 } from "./properties";
@@ -34,30 +34,19 @@ const SliderBox = () => {
     sliderTitle: "",
     sliderImageAlt: "",
   });
-
-  const [getSliderData, setGetSliderData] = useState({
-    sliderTitle: "",
-    sliderImageAlt: "",
-  });
-
-  const [updateData, setUpdateData] = useState({
-    sliderTitle: "",
-    sliderImageAlt: "",
-  });
-
+  const [updateData, setUpdateData] = useState([]);
   const [resMessage, setResMessage] = useState({});
   const { sliderTitle, sliderImageAlt } = data;
-  // const { updateSliderTitle, updateSliderImageAlt } = updateData;
 
   useEffect(() => {
     dispatch(loadGetData());
   }, [dispatch]);
 
   useEffect(() => {
-    if (getData) {
-      setGetSliderData(getData);
-      console.log(updateData);
-    }
+    setData({
+      ...data,
+      getData,
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getData]);
@@ -77,7 +66,6 @@ const SliderBox = () => {
 
   const handleUpdateChange = (e) => {
     const { name, value } = e.target;
-
     setUpdateData({
       ...updateData,
       [name]: value,
@@ -92,15 +80,14 @@ const SliderBox = () => {
     });
   };
 
-  const handleFileUpdate = (e) => {
+  const handleFileUpdate = (e, id) => {
     setUpdateData({
       ...updateData,
+      id: id,
       file: e.target.files[0],
       filename: e.target.files[0].name,
     });
   };
-
-  console.log(updateData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -120,8 +107,11 @@ const SliderBox = () => {
     });
   };
 
-  const handleUpdate = (id) => {
+  const handleUpdate = (e, id) => {
+    e.preventDefault();
+
     console.log(updateData);
+
     const formData = new FormData();
     formData.append("sliderImg", updateData.file);
     formData.append("sliderTitle", updateData.sliderTitle);
@@ -129,11 +119,7 @@ const SliderBox = () => {
 
     dispatch(loadUpdateData(formData, id));
 
-    // setData({
-    //   ...data,
-    //   file: "",
-    //   filename: "",
-    // });
+    setUpdateData({});
   };
 
   const deleteFileName = () => {
@@ -142,14 +128,17 @@ const SliderBox = () => {
       file: "",
       filename: "",
     });
+    setUpdateData({
+      ...updateData,
+      file: "",
+      filename: "",
+    });
   };
 
   const deleteSilderImg = (id) => {
-    dispatch(loadDeleteData(id));
+    dispatch(loadDeleteDataImg(id));
   };
-
-  console.log(getSliderData)
-
+  console.log(data.getData);
   return (
     <>
       <div className="configBox__header">
@@ -163,159 +152,150 @@ const SliderBox = () => {
       ) : (
         <div className="configBox__message"></div>
       )}
-
       <Box
-        sx={{
-          "& > :not(style)": { m: 1 },
-        }}
+        component="form"
+        onSubmit={handleSubmit}
+        method="POST"
         noValidate
         autoComplete="off"
-        className="configBox"
       >
         <div className="configBox__content">
+          <Stack direction="row" alignItems="center" spacing={2}>
+            {data.filename && (
+              <div>
+                {data.filename}
+                <IconButton
+                  color="primary"
+                  aria-label="delete picture"
+                  component="span"
+                  onClick={deleteFileName}
+                >
+                  <Delete />
+                </IconButton>
+              </div>
+            )}
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <label htmlFor="slider__img">
+              <Input
+                onChange={handleFileUpload}
+                accept="image/*"
+                id="slider__img"
+                type="file"
+              />
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+              >
+                <PhotoCamera />
+              </IconButton>
+            </label>
+          </Stack>
+
+          <TextField
+            value={sliderImageAlt}
+            onChange={handleChange}
+            {...altProps}
+          />
+
+          <TextField
+            value={sliderTitle}
+            onChange={handleChange}
+            {...titleProps}
+          />
+
+          <Button {...submitBtnProps}>{submitBtnProps.value}</Button>
+        </div>
+      </Box>
+
+      <br />
+      <br />
+      <br />
+      <br />
+
+      {data.getData &&
+        data.getData.map((item, key) => (
           <Box
             component="form"
-            onSubmit={handleSubmit}
-            method="POST"
+            onSubmit={(e) => handleUpdate(e, item.id)}
+            method="PUT"
             noValidate
             autoComplete="off"
+            key={item.id}
           >
-            <Stack direction="row" alignItems="center" spacing={2}>
-              {data.filename && (
+            <div className="configBox__content">
+              {item.img_name ? (
                 <div>
-                  {data.filename}
+                  <img
+                    width="100"
+                    src={`http://localhost:5555/static/images/slider/${item.img_name}`}
+                    alt=""
+                  />
                   <IconButton
                     color="primary"
                     aria-label="delete picture"
                     component="span"
-                    onClick={deleteFileName}
+                    onClick={() => deleteSilderImg(item.id)}
                   >
                     <Delete />
-                  </IconButton>
+                  </IconButton>{" "}
                 </div>
-              )}
-            </Stack>
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <label htmlFor="slider__img">
-                <Input
-                  onChange={handleFileUpload}
-                  accept="image/*"
-                  id="slider__img"
-                  type="file"
-                />
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="span"
-                >
-                  <PhotoCamera />
-                </IconButton>
-              </label>
-              <TextField
-                value={sliderImageAlt}
-                onChange={handleChange}
-                {...sliderImageAltProps}
-              />
-            </Stack>
-
-            <TextField
-              value={sliderTitle}
-              onChange={handleChange}
-              {...sliderTitleProps}
-            />
-            <Button {...submitBtnProps}>{submitBtnProps.value}</Button>
-          </Box>
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        {getData &&
-          getData.map((item) => (
-            <div key={item.id}>
-              <div className="configBox__content">
-                {item.img_name ? (
+              ) : (
+                <>
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    <img
-                      width="200"
-                      src={`http://localhost:5555/static/images/slider/${
-                        getData && item.img_name
-                      }`}
-                      alt=""
-                    />
-
-                    <IconButton
-                      color="primary"
-                      aria-label="delete picture"
-                      component="span"
-                      onClick={() => deleteSilderImg(item.id)}
-                    >
-                      <Delete />
-                    </IconButton>
-                    <TextField
-                      defaultValue={updateData && updateData.sliderImageAlt}
-                      onChange={handleUpdateChange}
-                      {...sliderImageAltProps}
-                    />
-                  </Stack>
-                ) : (
-                  <>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      {updateData.filename && (
-                        <div>
-                          {updateData.filename}
-                          <IconButton
-                            color="primary"
-                            aria-label="delete picture"
-                            component="span"
-                            onClick={deleteFileName}
-                          >
-                            <Delete />
-                          </IconButton>
-                        </div>
-                      )}
-                    </Stack>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <label htmlFor="upload_slider__img">
-                        <Input
-                          onChange={handleFileUpdate}
-                          accept="image/*"
-                          id="upload_slider__img"
-                          type="file"
-                        />
+                    {updateData && updateData.id === key ? (
+                      <div>
+                        {updateData.filename}
                         <IconButton
                           color="primary"
-                          aria-label="upload picture"
+                          aria-label="delete picture"
                           component="span"
+                          onClick={deleteFileName}
                         >
-                          <PhotoCamera />
+                          <Delete />
                         </IconButton>
-                      </label>
-                      <TextField
-                        defaultValue={item.img_alt}
-                        onChange={handleUpdateChange}
-                        {...sliderImageAltProps}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </Stack>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <label htmlFor={`slider__${key}`}>
+                      <Input
+                        onChange={(e) => handleFileUpdate(e, key)}
+                        accept="image/*"
+                        id={`slider__${key}`}
+                        type="file"
                       />
-                    </Stack>
-                  </>
-                )}
+                      <IconButton
+                        color="primary"
+                        aria-label="upload picture"
+                        component="span"
+                      >
+                        <PhotoCamera />
+                      </IconButton>
+                    </label>
+                  </Stack>
+                </>
+              )}
 
-                <TextField
-                  defaultValue={item.title}
-                  onChange={handleUpdateChange}
-                  {...sliderTitleProps}
-                />
+              <TextField
+                defaultValue={item.img_alt}
+                onChange={handleUpdateChange}
+                {...altProps}
+              />
 
-                <Button
-                  onClick={() => handleUpdate(item.id)}
-                  {...updateBtnProps}
-                >
-                  {updateBtnProps.value}
-                </Button>
-              </div>
+              <TextField
+                defaultValue={item.title}
+                onChange={handleUpdateChange}
+                {...titleProps}
+              />
+
+              <Button {...updateBtnProps}>{updateBtnProps.value}</Button>
             </div>
-          ))}
-      </Box>
+          </Box>
+        ))}
     </>
   );
 };

@@ -8,7 +8,7 @@ const TopBar = () => {
 
   useEffect(() => {
     dispatch(loadGetData());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="container-fluid px-5 d-none d-lg-block">

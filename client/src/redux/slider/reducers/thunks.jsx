@@ -53,9 +53,9 @@ export const loadUpdateData = (data, id) => (dispatch) => {
       console.log(err);
     });
 };
-export const loadDeleteData = (id) => (dispatch) => {
+export const loadDeleteDataImg = (id) => (dispatch) => {
   DataService()
-    .deleteData(id)
+    .deleteDataImg(id)
     .then((res) => {
       if (res.error_msg) {
         dispatch(actions.message(res.data));

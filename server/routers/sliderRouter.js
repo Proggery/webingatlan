@@ -21,22 +21,9 @@ router.get("/getSlider", async (req, res) => {
 router.post("/createSlider", images.single("sliderImg"), async (req, res) => {
   const { sliderTitle, sliderImageAlt } = req.body;
 
-  if (!req.file) {
-    return console.log({ error_message: "Nincs kép kiválasztva!" });
-  }
-  if (!sliderTitle && !sliderImageAlt) {
-    try {
-      const files = await readdir("uploads/images/slider/");
-      for (const file of files) {
-        unlink(`uploads/images/slider/${file}`, (err) => {
-          if (err) throw err;
-          console.log("kép törölve az uploads mappából!");
-        });
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    return res.send({ error_message: "Az egyik mező kitöltése kötelező!" });
+
+  if (!sliderTitle && !sliderImageAlt && !req.file) {
+    return res.send({ error_message: "nincs adat kiválasztva!" });
   } else {
     let fileType = req.file.mimetype.split("/")[1];
 
@@ -83,42 +70,50 @@ router.put(
       },
     });
 
-    if (sliderTitle === doesntChange[0].title && sliderImageAlt === doesntChange[0].img_alt) {
-      return res.send({ error_msg: "A slider nem módosult!" });
-    } else {
-      if (req.file !== undefined) {
-        let fileType = req.file.mimetype.split("/")[1];
+    if (req.file !== undefined) {
+      let fileType = req.file.mimetype.split("/")[1];
 
-        if (fileType === "svg+xml") {
-          fileType = fileType.split("+")[0];
-        }
-
-        let newFileName = req.file.filename + "." + fileType;
-
-        rename(
-          `uploads/images/slider/${req.file.filename}`,
-          `uploads/images/slider/${newFileName}`,
-          async (err) => {
-            if (err) throw err;
-
-            await slider.update({
-              where: { id: id },
-              data: { img_name: newFileName },
-            });
-          }
-        );
+      if (fileType === "svg+xml") {
+        fileType = fileType.split("+")[0];
       }
 
-      await slider.update({
-        where: { id: id },
-        data: { title: sliderTitle, img_alt: sliderImageAlt },
-      });
+      let newFileName = req.file.filename + "." + fileType;
+
+      rename(
+        `uploads/images/slider/${req.file.filename}`,
+        `uploads/images/slider/${newFileName}`,
+        async (err) => {
+          if (err) throw err;
+
+          await slider.update({
+            where: { id: id },
+            data: { img_name: newFileName },
+          });
+        }
+      );
+    }
+
+    if (sliderTitle === "undefined" && sliderImageAlt === "undefined") {
+      return res.send({ error_msg: "A slider nem módosult!" });
+    } else {
+      if (sliderTitle !== "undefined") {
+        await slider.update({
+          where: { id: id },
+          data: { title: sliderTitle },
+        });
+      }
+      if (sliderImageAlt !== "undefined") {
+        await slider.update({
+          where: { id: id },
+          data: { img_alt: sliderImageAlt },
+        });
+      }
       res.send({ success_msg: "Slider módosítva!" });
     }
   }
 );
 
-router.put("/deleteSlider/:id", async (req, res) => {
+router.put("/deleteSliderImg/:id", async (req, res) => {
   const id = parseInt(req.params.id);
 
   const sliderImgName = await slider.findUnique({

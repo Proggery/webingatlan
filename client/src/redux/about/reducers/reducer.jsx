@@ -8,17 +8,25 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         getData: payload,
       };
+    case actionType.GET_DATA_LISTING:
+      return {
+        ...state,
+        getListing: payload,
+      };
     case actionType.CREATE_DATA:
     case actionType.UPDATE_DATA:
-    case actionType.DELETE_DATA:
+    case actionType.DELETE_DATA_IMG:
+    case actionType.CREATE_DATA_LISTING:
+    case actionType.UPDATE_DATA_LISTING:
+    case actionType.DELETE_DATA_LISTING:
       return {
         ...state,
       };
-      case actionType.MESSAGE:
-        return {
-          ...state,
-          message: payload,
-        };
+    case actionType.MESSAGE:
+      return {
+        ...state,
+        message: payload,
+      };
 
     default:
       return state;

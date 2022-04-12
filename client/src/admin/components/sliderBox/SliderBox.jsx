@@ -138,7 +138,7 @@ const SliderBox = () => {
   const deleteSilderImg = (id) => {
     dispatch(loadDeleteDataImg(id));
   };
-  console.log(data.getData);
+
   return (
     <>
       <div className="configBox__header">
@@ -208,12 +208,7 @@ const SliderBox = () => {
           <Button {...submitBtnProps}>{submitBtnProps.value}</Button>
         </div>
       </Box>
-
       <br />
-      <br />
-      <br />
-      <br />
-
       {data.getData &&
         data.getData.map((item, key) => (
           <Box
@@ -226,7 +221,7 @@ const SliderBox = () => {
           >
             <div className="configBox__content">
               {item.img_name ? (
-                <div>
+                <>
                   <img
                     width="100"
                     src={`http://localhost:5555/static/images/slider/${item.img_name}`}
@@ -240,7 +235,7 @@ const SliderBox = () => {
                   >
                     <Delete />
                   </IconButton>{" "}
-                </div>
+                </>
               ) : (
                 <>
                   <Stack direction="row" alignItems="center" spacing={2}>

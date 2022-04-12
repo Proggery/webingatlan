@@ -8,9 +8,6 @@ import { Navigation, Autoplay } from "swiper";
 import { useDispatch, useSelector } from "react-redux";
 import { loadGetData } from "../../redux/slider/reducers/thunks";
 
-import carousel1 from "../../img/carousel-1.jpg";
-import carousel2 from "../../img/carousel-2.jpg";
-
 const Carousel = () => {
   const dispatch = useDispatch();
   const { getData } = useSelector((state) => state.slider);

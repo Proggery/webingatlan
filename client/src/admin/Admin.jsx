@@ -8,6 +8,7 @@ import Login from "./components/login/Login";
 import AccountBox from "./components/accountBox/AccountBox";
 import AdminBox from "./components/adminBox/AdminBox";
 import SliderBox from "./components/sliderBox/SliderBox";
+import AboutBox from "./components/aboutBox/AboutBox";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -44,10 +45,13 @@ const Admin = () => {
             <ShareBox />
           </Item> */}
           <Item className="" sx={{ p: "30px" }}>
-            <SliderBox />
+            <AboutBox />
           </Item>
           <Item className="" sx={{ p: "30px" }}>
             <AccountBox />
+          </Item>
+          <Item className="" sx={{ p: "30px" }}>
+            <SliderBox />
           </Item>
           <Item className="" sx={{ p: "30px" }}>
             <AdminBox />

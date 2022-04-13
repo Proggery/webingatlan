@@ -14,10 +14,13 @@ import {
   loadCreateData,
   loadUpdateData,
   loadDeleteDataImg,
-} from "../../../redux/sections/slider.section/reducers/thunks";
+} from "../../../redux/sections/services.section/reducers/thunks";
 import {
   titleProps,
+  boxTitleProps,
+  textProps,
   altProps,
+  iconProps,
   submitBtnProps,
   updateBtnProps,
 } from "./properties";
@@ -26,17 +29,26 @@ const Input = styled("input")({
   display: "none",
 });
 
-const SliderBox = () => {
+const ServicesBox = () => {
   const dispatch = useDispatch();
-  const { getData, message } = useSelector((state) => state.slider);
+  const { getData, message } = useSelector((state) => state.services);
 
   const [data, setData] = useState({
-    sliderTitle: "",
-    sliderImageAlt: "",
+    servicesTitle: "",
+    servicesBoxTitle: "",
+    servicesText: "",
+    servicesImageAlt: "",
+    servicesIconClass: "",
   });
   const [updateData, setUpdateData] = useState([]);
   const [resMessage, setResMessage] = useState({});
-  const { sliderTitle, sliderImageAlt } = data;
+  const {
+    servicesTitle,
+    servicesBoxTitle,
+    servicesText,
+    servicesImageAlt,
+    servicesIconClass,
+  } = data;
 
   useEffect(() => {
     dispatch(loadGetData());
@@ -93,15 +105,21 @@ const SliderBox = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("sliderImg", data.file);
-    formData.append("sliderTitle", sliderTitle);
-    formData.append("sliderImageAlt", sliderImageAlt);
+    formData.append("servicesImg", data.file);
+    formData.append("servicesTitle", servicesTitle);
+    formData.append("servicesBoxTitle", servicesBoxTitle);
+    formData.append("servicesText", servicesText);
+    formData.append("servicesImageAlt", servicesImageAlt);
+    formData.append("servicesIconClass", servicesIconClass);
 
     dispatch(loadCreateData(formData));
     dispatch(loadGetData());
     setData({
-      sliderTitle: "",
-      sliderImageAlt: "",
+      servicesTitle: "",
+      servicesBoxTitle: "",
+      servicesText: "",
+      servicesImageAlt: "",
+      servicesIconClass: "",
       file: "",
       filename: "",
     });
@@ -113,12 +131,14 @@ const SliderBox = () => {
     console.log(updateData);
 
     const formData = new FormData();
-    formData.append("sliderImg", updateData.file);
-    formData.append("sliderTitle", updateData.sliderTitle);
-    formData.append("sliderImageAlt", updateData.sliderImageAlt);
+    formData.append("servicesImg", updateData.file);
+    formData.append("servicesTitle", updateData.servicesTitle);
+    formData.append("servicesBoxTitle", updateData.servicesBoxTitle);
+    formData.append("servicesText", updateData.servicesText);
+    formData.append("servicesImageAlt", updateData.servicesImageAlt);
+    formData.append("servicesIconClass", updateData.servicesIconClass);
 
     dispatch(loadUpdateData(formData, id));
-
     setUpdateData({});
   };
 
@@ -142,7 +162,7 @@ const SliderBox = () => {
   return (
     <>
       <div className="configBox__header">
-        <h2>Slider beállítás</h2>
+        <h2>Szolgáltatás beállítás</h2>
       </div>
 
       {resMessage && resMessage ? (
@@ -159,6 +179,17 @@ const SliderBox = () => {
         noValidate
         autoComplete="off"
       >
+        <TextField
+          value={servicesTitle}
+          onChange={handleChange}
+          {...titleProps}
+        />
+        <Button
+          // onClick={handleListingBtn}
+          sx={{ fontSize: "2rem", minWidth: "40px", lineHeight: "1" }}
+        >
+          +
+        </Button>
         <div className="configBox__content">
           <Stack direction="row" alignItems="center" spacing={2}>
             {data.filename && (
@@ -176,11 +207,11 @@ const SliderBox = () => {
             )}
           </Stack>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <label htmlFor="slider__img">
+            <label htmlFor="services__img">
               <Input
                 onChange={handleFileUpload}
                 accept="image/*"
-                id="slider__img"
+                id="services__img"
                 type="file"
               />
               <IconButton
@@ -194,15 +225,25 @@ const SliderBox = () => {
           </Stack>
 
           <TextField
-            value={sliderImageAlt}
+            value={servicesImageAlt}
             onChange={handleChange}
             {...altProps}
           />
 
           <TextField
-            value={sliderTitle}
+            value={servicesBoxTitle}
             onChange={handleChange}
-            {...titleProps}
+            {...boxTitleProps}
+          />
+          <TextField
+            value={servicesText}
+            onChange={handleChange}
+            {...textProps}
+          />
+          <TextField
+            value={servicesIconClass}
+            onChange={handleChange}
+            {...iconProps}
           />
 
           <Button {...submitBtnProps}>{submitBtnProps.value}</Button>
@@ -224,7 +265,7 @@ const SliderBox = () => {
                 <>
                   <img
                     width="100"
-                    src={`http://localhost:5555/static/images/slider/${item.img_name}`}
+                    src={`http://localhost:5555/static/images/services/${item.img_name}`}
                     alt=""
                   />
                   <IconButton
@@ -256,11 +297,11 @@ const SliderBox = () => {
                     )}
                   </Stack>
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    <label htmlFor={`slider__${key}`}>
+                    <label htmlFor={`services__${key}`}>
                       <Input
                         onChange={(e) => handleFileUpdate(e, key)}
                         accept="image/*"
-                        id={`slider__${key}`}
+                        id={`services__${key}`}
                         type="file"
                       />
                       <IconButton
@@ -286,6 +327,21 @@ const SliderBox = () => {
                 onChange={handleUpdateChange}
                 {...titleProps}
               />
+              <TextField
+                defaultValue={item.box_title}
+                onChange={handleUpdateChange}
+                {...boxTitleProps}
+              />
+              <TextField
+                defaultValue={item.text}
+                onChange={handleUpdateChange}
+                {...textProps}
+              />
+              <TextField
+                defaultValue={item.icon_class}
+                onChange={handleUpdateChange}
+                {...iconProps}
+              />
 
               <Button {...updateBtnProps}>{updateBtnProps.value}</Button>
             </div>
@@ -295,4 +351,4 @@ const SliderBox = () => {
   );
 };
 
-export default SliderBox;
+export default ServicesBox;

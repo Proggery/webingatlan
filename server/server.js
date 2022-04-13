@@ -6,9 +6,9 @@ const bodyParser = require("body-parser");
 
 const loginRouter = require("./routers/loginRouter");
 const adminRouter = require("./routers/adminRouter");
-const uploadFileRouter = require("./routers/uploadFileRouter");
 const sliderRouter = require("./routers/sliderRouter");
 const aboutRouter = require("./routers/aboutRouter");
+const servicesRouter = require("./routers/servicesRouter");
 
 require("dotenv").config();
 
@@ -19,11 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/static", express.static("uploads"));
 
-app.use("", uploadFileRouter);
-app.use("", sliderRouter);
 app.use("", adminRouter);
 app.use("", loginRouter);
+app.use("", sliderRouter);
 app.use("", aboutRouter);
+app.use("", servicesRouter);
 
 app.get("/", (req, res) => {
   res.send("sikeres csatlakozás");

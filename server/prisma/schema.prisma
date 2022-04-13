@@ -8,13 +8,13 @@ datasource db {
 }
 
 model about {
-  id           Int     @id @default(autoincrement())
-  title        String? @db.VarChar(45)
-  subtitle     String? @db.VarChar(45)
-  text         String? @db.VarChar(45)
-  text2        String? @db.VarChar(45)
-  img_name     String? @db.VarChar(45)
-  img_alt      String? @db.VarChar(45)
+  id       Int     @id @default(autoincrement())
+  title    String? @db.VarChar(255)
+  subtitle String? @db.VarChar(255)
+  text     String? @db.VarChar(500)
+  text2    String? @db.VarChar(500)
+  img_name String? @db.VarChar(45)
+  img_alt  String? @db.VarChar(255)
 }
 
 model aboutListing {
@@ -43,4 +43,14 @@ model slider {
   title    String? @db.VarChar(45)
   img_name String? @db.VarChar(45)
   img_alt  String? @db.VarChar(45)
+}
+
+model services {
+  id         Int     @id @default(autoincrement())
+  title      String? @db.VarChar(45)
+  box_title  String? @db.VarChar(255)
+  text       String? @db.VarChar(255)
+  img_name   String? @db.VarChar(45)
+  img_alt    String? @db.VarChar(45)
+  icon_class String  @db.VarChar(255)
 }

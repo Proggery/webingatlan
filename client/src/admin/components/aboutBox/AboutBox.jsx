@@ -19,7 +19,7 @@ import {
   loadCreateListing,
   loadUpdateListing,
   loadDeleteListing,
-} from "../../../redux/about/reducers/thunks";
+} from "../../../redux/sections/about.section/reducers/thunks";
 import {
   titleProps,
   subtitleProps,
@@ -175,8 +175,6 @@ const AboutBox = () => {
   const updateListing = (e, id) => {
     e.preventDefault();
 
-    console.log(id);
-
     dispatch(loadUpdateListing(updateData, id));
   };
 
@@ -199,7 +197,7 @@ const AboutBox = () => {
     });
   };
 
-  const deleteAboutImg = (id) => {
+  const deleteDataImg = (id) => {
     dispatch(loadDeleteDataImg(id));
   };
 
@@ -227,20 +225,20 @@ const AboutBox = () => {
         <div className="configBox__content">
           {getData && getData.img_name ? (
             <>
-                  <img
-                    width="100"
-                    src={`http://localhost:5555/static/images/about/${getData.img_name}`}
-                    alt=""
-                  />
-                  <IconButton
-                    color="primary"
-                    aria-label="delete picture"
-                    component="span"
-                    onClick={() => deleteAboutImg(getData.id)}
-                  >
-                    <Delete />
-                  </IconButton>{" "}
-                </>
+              <img
+                width="100"
+                src={`http://localhost:5555/static/images/about/${getData.img_name}`}
+                alt=""
+              />
+              <IconButton
+                color="primary"
+                aria-label="delete picture"
+                component="span"
+                onClick={() => deleteDataImg(getData.id)}
+              >
+                <Delete />
+              </IconButton>{" "}
+            </>
           ) : (
             <>
               <Stack direction="row" alignItems="center" spacing={2}>
@@ -356,91 +354,6 @@ const AboutBox = () => {
             )}
         </Stack>
       </Box>
-
-      {/* {data.getData && data.getData ? (
-      ) : (
-        data.getData.map((item, key) => (
-          <Box
-            component="form"
-            onSubmit={(e) => handleUpdate(e, item.id)}
-            method="PUT"
-            noValidate
-            autoComplete="off"
-            key={item.id}
-          >
-            <div className="configBox__content">
-              {item.img_name ? (
-                <div>
-                  <img
-                    width="100"
-                    src={`http://localhost:5555/static/images/slider/${item.img_name}`}
-                    alt=""
-                  />
-                  <IconButton
-                    color="primary"
-                    aria-label="delete picture"
-                    component="span"
-                    onClick={() => deleteSilderImg(item.id)}
-                  >
-                    <Delete />
-                  </IconButton>{" "}
-                </div>
-              ) : (
-                <>
-                  <Stack direction="row" alignItems="center" spacing={2}>
-                    {updateData && updateData.id === key ? (
-                      <div>
-                        {updateData.filename}
-                        <IconButton
-                          color="primary"
-                          aria-label="delete picture"
-                          component="span"
-                          onClick={deleteFileName}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </Stack>
-                  <Stack direction="row" alignItems="center" spacing={2}>
-                    <label htmlFor={`slider__${key}`}>
-                      <Input
-                        onChange={(e) => handleFileUpdate(e, key)}
-                        accept="image/*"
-                        id={`slider__${key}`}
-                        type="file"
-                      />
-                      <IconButton
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                      >
-                        <PhotoCamera />
-                      </IconButton>
-                    </label>
-                  </Stack>
-                </>
-              )}
-
-              <TextField
-                defaultValue={item.img_alt}
-                onChange={handleUpdateChange}
-                {...altProps}
-              />
-
-              <TextField
-                defaultValue={item.title}
-                onChange={handleUpdateChange}
-                {...titleProps}
-              />
-
-              <Button {...updateBtnProps}>{updateBtnProps.value}</Button>
-            </div>
-          </Box>
-        ))
-      )} */}
     </>
   );
 };

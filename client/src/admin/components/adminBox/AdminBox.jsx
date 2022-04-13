@@ -5,7 +5,7 @@ import {
   loadGetData,
   loadCreateData,
   loadUpdateData,
-} from "../../../redux/admin/reducers/thunks";
+} from "../../../redux/sections/admin.section/reducers/thunks";
 import {
   adminFirstnameProps,
   adminLastnameProps,

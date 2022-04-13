@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadGetData } from "../../redux/admin/reducers/thunks";
+import { loadGetData } from "../../redux/sections/admin.section/reducers/thunks";
 
 const NavBar = () => {
   const dispatch = useDispatch();

@@ -4,7 +4,7 @@ import { Button, Box, TextField } from "@mui/material";
 import {
   loadGetData,
   loadUpdateData,
-} from "../../../redux/login/reducers/thunks";
+} from "../../../redux/sections/login.section/reducers/thunks";
 import { usernameProps, passwordProps, submitBtnProps } from "./properties";
 
 const Account = () => {

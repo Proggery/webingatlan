@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { loadCreateData } from "../../../redux/login/reducers/thunks";
+import { loadCreateData } from "../../../redux/sections/login.section/reducers/thunks";
 import { usernameProps, passwordProps, submitBtnProps } from "./properties";
 
 const Login = () => {

@@ -89,8 +89,6 @@ router.put("/updateAbout/:id", images.single("aboutImg"), async (req, res) => {
   const { aboutTitle, aboutSubTitle, aboutText, aboutText2, aboutImageAlt } =
     req.body;
 
-    console.log(aboutText2)
-
   if (req.file !== undefined) {
     let fileType = req.file.mimetype.split("/")[1];
 

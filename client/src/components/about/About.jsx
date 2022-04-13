@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import signature from "../../img/signature.jpg";
 import about from "../../img/about.jpg";
-import { loadGetData, loadGetListing } from "../../redux/about/reducers/thunks";
+import { loadGetData, loadGetListing } from "../../redux/sections/about.section/reducers/thunks";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Stack } from "@mui/material";
 

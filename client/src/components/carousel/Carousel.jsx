@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper";
 import { useDispatch, useSelector } from "react-redux";
-import { loadGetData } from "../../redux/slider/reducers/thunks";
+import { loadGetData } from "../../redux/sections/slider.section/reducers/thunks";
 
 const Carousel = () => {
   const dispatch = useDispatch();

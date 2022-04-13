@@ -61,15 +61,6 @@ router.put(
     const id = parseInt(req.params.id);
     const { sliderTitle, sliderImageAlt } = req.body;
 
-    const doesntChange = await slider.findMany({
-      where: { id },
-      select: {
-        title: true,
-        img_name: true,
-        img_alt: true,
-      },
-    });
-
     if (req.file !== undefined) {
       let fileType = req.file.mimetype.split("/")[1];
 

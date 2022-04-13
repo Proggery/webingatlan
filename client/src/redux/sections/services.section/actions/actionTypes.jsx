@@ -1,0 +1,5 @@
+export const GET_DATA= "GET_SERVICES"
+export const CREATE_DATA= "CREATE_SERVICES"
+export const UPDATE_DATA= "UPDATE_SERVICES"
+export const DELETE_DATA= "DELETE_SERVICES_IMG"
+export const MESSAGE = "SERVICES_MESSAGE";

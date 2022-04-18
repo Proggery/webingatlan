@@ -4,6 +4,7 @@ import loginReducer from "../sections/login.section/reducers/reducer";
 import adminReducer from "../sections/admin.section/reducers/reducer";
 import aboutReducer from "../sections/about.section/reducers/reducer";
 import servicesReducer from "../sections/services.section/reducers/reducer";
+import portfolioReducer from "../sections/portfolio.section/reducers/reducer";
 
 const state = () =>
   combineReducers({
@@ -12,6 +13,7 @@ const state = () =>
     admin: adminReducer,
     about: aboutReducer,
     services: servicesReducer,
+    portfolio: portfolioReducer,
   });
 
 export default state;

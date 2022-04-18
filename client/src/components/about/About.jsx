@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Stack } from "@mui/material";
 
 const About = () => {
+  const { REACT_APP_BACKEND_IMAGES_URL } =process.env;
+
   const dispatch = useDispatch();
   const { getData, getListing } = useSelector((state) => state.about);
 
@@ -38,7 +40,7 @@ const About = () => {
             >
               {getListing &&
                 getListing.map((item) => (
-                  <Stack>
+                  <Stack key={item.id}>
                     <p className="fw-bold mb-2">
                       <i className="fa fa-check text-primary me-3"></i>
                       {item.title}
@@ -75,7 +77,7 @@ const About = () => {
           <div className="position-relative bg-dark-radial h-100 ms-5">
             <img
               className="position-absolute w-100 h-100 mt-5 ms-n5"
-              src={`http://localhost:5555/static/images/about/${
+              src={`${REACT_APP_BACKEND_IMAGES_URL}/about/${
                 getData && getData.img_name
               }`}
               style={{ objectFit: "cover" }}

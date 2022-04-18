@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { loadCreateData } from "../../../redux/sections/login.section/reducers/thunks";
+import {
+  loadGetData,
+  loadCreateData,
+} from "../../../redux/sections/login.section/reducers/thunks";
 import { usernameProps, passwordProps, submitBtnProps } from "./properties";
 
 const Login = () => {
@@ -11,6 +14,11 @@ const Login = () => {
     username: "",
     password: "",
   });
+
+  useEffect(() => {
+    const id = localStorage.getItem("userID");
+    dispatch(loadGetData(id));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

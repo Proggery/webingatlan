@@ -14,7 +14,7 @@ import {
   loadCreateData,
   loadUpdateData,
   loadDeleteDataImg,
-} from "../../../redux/sections/services.section/reducers/thunks";
+} from "../../../redux/sections/portfolio.section/reducers/thunks";
 import {
   titleProps,
   boxTitleProps,
@@ -29,25 +29,27 @@ const Input = styled("input")({
   display: "none",
 });
 
-const ServicesBox = () => {
+const PortfolioBox = () => {
   const dispatch = useDispatch();
-  const { getData, message } = useSelector((state) => state.services);
+  const { getData, message } = useSelector((state) => state.portfolio);
+
+  console.log(getData)
 
   const [data, setData] = useState({
-    servicesTitle: "",
-    servicesBoxTitle: "",
-    servicesText: "",
-    servicesImageAlt: "",
-    servicesIconClass: "",
+    portfolioTitle: "",
+    portfolioBoxTitle: "",
+    portfolioText: "",
+    portfolioImageAlt: "",
+    portfolioIconClass: "",
   });
   const [updateData, setUpdateData] = useState([]);
   const [resMessage, setResMessage] = useState({});
   const {
-    servicesTitle,
-    servicesBoxTitle,
-    servicesText,
-    servicesImageAlt,
-    servicesIconClass,
+    portfolioTitle,
+    portfolioBoxTitle,
+    portfolioText,
+    portfolioImageAlt,
+    portfolioIconClass,
   } = data;
 
   useEffect(() => {
@@ -105,21 +107,21 @@ const ServicesBox = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("servicesImg", data.file);
-    formData.append("servicesTitle", servicesTitle);
-    formData.append("servicesBoxTitle", servicesBoxTitle);
-    formData.append("servicesText", servicesText);
-    formData.append("servicesImageAlt", servicesImageAlt);
-    formData.append("servicesIconClass", servicesIconClass);
+    formData.append("portfolioImg", data.file);
+    formData.append("portfolioTitle", portfolioTitle);
+    formData.append("portfolioBoxTitle", portfolioBoxTitle);
+    formData.append("portfolioText", portfolioText);
+    formData.append("portfolioImageAlt", portfolioImageAlt);
+    formData.append("portfolioIconClass", portfolioIconClass);
 
     dispatch(loadCreateData(formData));
     dispatch(loadGetData());
     setData({
-      servicesTitle: "",
-      servicesBoxTitle: "",
-      servicesText: "",
-      servicesImageAlt: "",
-      servicesIconClass: "",
+      portfolioTitle: "",
+      portfolioBoxTitle: "",
+      portfolioText: "",
+      portfolioImageAlt: "",
+      portfolioIconClass: "",
       file: "",
       filename: "",
     });
@@ -131,12 +133,12 @@ const ServicesBox = () => {
     console.log(updateData);
 
     const formData = new FormData();
-    formData.append("servicesImg", updateData.file);
-    formData.append("servicesTitle", updateData.servicesTitle);
-    formData.append("servicesBoxTitle", updateData.servicesBoxTitle);
-    formData.append("servicesText", updateData.servicesText);
-    formData.append("servicesImageAlt", updateData.servicesImageAlt);
-    formData.append("servicesIconClass", updateData.servicesIconClass);
+    formData.append("portfolioImg", updateData.file);
+    formData.append("portfolioTitle", updateData.portfolioTitle);
+    formData.append("portfolioBoxTitle", updateData.portfolioBoxTitle);
+    formData.append("portfolioText", updateData.portfolioText);
+    formData.append("portfolioImageAlt", updateData.portfolioImageAlt);
+    formData.append("portfolioIconClass", updateData.portfolioIconClass);
 
     dispatch(loadUpdateData(formData, id));
     setUpdateData({});
@@ -162,7 +164,7 @@ const ServicesBox = () => {
   return (
     <>
       <div className="configBox__header">
-        <h2>Szolgáltatás beállítás</h2>
+        <h2>Portfólió beállítás</h2>
       </div>
 
       {resMessage && resMessage ? (
@@ -180,10 +182,11 @@ const ServicesBox = () => {
         autoComplete="off"
       >
         <TextField
-          value={servicesTitle}
+          value={portfolioTitle}
           onChange={handleChange}
           {...titleProps}
         />
+      
         <div className="configBox__content">
           <Stack direction="row" alignItems="center" spacing={2}>
             {data.filename && (
@@ -201,11 +204,11 @@ const ServicesBox = () => {
             )}
           </Stack>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <label htmlFor="services__img">
+            <label htmlFor="portfolio__img">
               <Input
                 onChange={handleFileUpload}
                 accept="image/*"
-                id="services__img"
+                id="portfolio__img"
                 type="file"
               />
               <IconButton
@@ -219,23 +222,23 @@ const ServicesBox = () => {
           </Stack>
 
           <TextField
-            value={servicesImageAlt}
+            value={portfolioImageAlt}
             onChange={handleChange}
             {...altProps}
           />
 
           <TextField
-            value={servicesBoxTitle}
+            value={portfolioBoxTitle}
             onChange={handleChange}
             {...boxTitleProps}
           />
           <TextField
-            value={servicesText}
+            value={portfolioText}
             onChange={handleChange}
             {...textProps}
           />
           <TextField
-            value={servicesIconClass}
+            value={portfolioIconClass}
             onChange={handleChange}
             {...iconProps}
           />
@@ -259,7 +262,7 @@ const ServicesBox = () => {
                 <>
                   <img
                     width="100"
-                    src={`http://localhost:5555/static/images/services/${item.img_name}`}
+                    src={`http://localhost:5555/static/images/portfolio/${item.img_name}`}
                     alt=""
                   />
                   <IconButton
@@ -291,11 +294,11 @@ const ServicesBox = () => {
                     )}
                   </Stack>
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    <label htmlFor={`services__${key}`}>
+                    <label htmlFor={`portfolio__${key}`}>
                       <Input
                         onChange={(e) => handleFileUpdate(e, key)}
                         accept="image/*"
-                        id={`services__${key}`}
+                        id={`portfolio__${key}`}
                         type="file"
                       />
                       <IconButton
@@ -345,4 +348,4 @@ const ServicesBox = () => {
   );
 };
 
-export default ServicesBox;
+export default PortfolioBox;

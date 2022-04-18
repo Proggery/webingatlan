@@ -8,7 +8,7 @@ datasource db {
 }
 
 model about {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   title    String? @db.VarChar(255)
   subtitle String? @db.VarChar(255)
   text     String? @db.VarChar(500)
@@ -18,24 +18,24 @@ model about {
 }
 
 model aboutListing {
-  id    Int     @id @default(autoincrement())
-  title String? @db.VarChar(45)
+  id    String  @id @default(uuid())
+  title String? @db.VarChar(255)
 }
 
 model account {
-  id       Int     @id @default(autoincrement())
-  password String? @db.VarChar(45)
-  username String? @unique(map: "username") @db.VarChar(45)
+  id       String  @id @default(uuid())
+  password String? @db.VarChar(64)
+  username String? @unique(map: "username") @db.VarChar(255)
 }
 
 model admin {
-  id        Int     @id @default(autoincrement())
-  firstname String  @db.VarChar(45)
-  lastname  String  @db.VarChar(45)
-  company   String? @db.VarChar(45)
-  address   String? @db.VarChar(45)
-  phone     String? @db.VarChar(45)
-  email     String? @db.VarChar(45)
+  id        String  @id @default(uuid())
+  firstname String  @db.VarChar(255)
+  lastname  String  @db.VarChar(255)
+  company   String? @db.VarChar(255)
+  address   String? @db.VarChar(255)
+  phone     String? @db.VarChar(255)
+  email     String? @db.VarChar(255)
 }
 
 model slider {
@@ -46,6 +46,16 @@ model slider {
 }
 
 model services {
+  id         Int     @id @default(autoincrement())
+  title      String? @db.VarChar(45)
+  box_title  String? @db.VarChar(255)
+  text       String? @db.VarChar(255)
+  img_name   String? @db.VarChar(45)
+  img_alt    String? @db.VarChar(45)
+  icon_class String  @db.VarChar(255)
+}
+
+model portfolio {
   id         Int     @id @default(autoincrement())
   title      String? @db.VarChar(45)
   box_title  String? @db.VarChar(255)

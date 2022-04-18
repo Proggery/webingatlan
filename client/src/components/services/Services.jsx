@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { loadGetData } from "../../redux/sections/services.section/reducers/thunks";
-
 import { useDispatch, useSelector } from "react-redux";
 
 const Services = () => {
+  const { REACT_APP_BACKEND_IMAGES_URL } =process.env;
+
   const dispatch = useDispatch();
   const { getData } = useSelector((state) => state.services);
 
@@ -83,7 +84,7 @@ const Services = () => {
               <div className="service-item bg-white d-flex flex-column align-items-center text-center">
                 <img
                   className="img-fluid"
-                  src={item.img_name}
+                  src={`${REACT_APP_BACKEND_IMAGES_URL}/services/${item.img_name}`}
                   alt={item.img_alt}
                 />
                 <div className="service-icon bg-white">

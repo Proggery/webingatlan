@@ -44,6 +44,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const AboutBox = () => {
+  const { REACT_APP_BACKEND_IMAGES_URL } =process.env;
+
   const dispatch = useDispatch();
   const { getData, getListing, message } = useSelector((state) => state.about);
 
@@ -227,7 +229,7 @@ const AboutBox = () => {
             <>
               <img
                 width="100"
-                src={`http://localhost:5555/static/images/about/${getData.img_name}`}
+                src={`${REACT_APP_BACKEND_IMAGES_URL}/about/${getData.img_name}`}
                 alt=""
               />
               <IconButton

@@ -1,10 +1,13 @@
 const router = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
 const { account } = new PrismaClient();
+const bcrypt = require("bcrypt");
 
-router.get("/getLogin", async (req, res) => {
+router.get("/getLogin/:id", async (req, res) => {
+  const { id } = req.params;
+
   const user = await account.findUnique({
-    where: { id: 1 },
+    where: { id: id },
     select: {
       id: true,
       username: true,
@@ -14,7 +17,7 @@ router.get("/getLogin", async (req, res) => {
 });
 
 router.post("/createLogin", async (req, res) => {
-  const { username, password } = req.body;
+  let { username, password } = req.body;
 
   const userExists = await account.findUnique({
     where: {
@@ -27,11 +30,31 @@ router.post("/createLogin", async (req, res) => {
     },
   });
 
-  if (!userExists || password !== userExists.password) {
-    return res.send({ error_msg: "Hibás felhasználónév vagy jelszó!" });
-  }
+  if (userExists !== null) {
+    if (userExists || (await bcrypt.compare(password, userExists.password))) {
+      res.send({ success_msg: "Felhasználó létezik!", user: userExists });
+    } else {
+      return res.send({ error_msg: "Hibás felhasználónév vagy jelszó!" });
+    }
+  } else {
+    if ((username && password) === "admin") {
+      password = "admin";
+      const encryptedPassword = await bcrypt.hash(password, 10);
 
-  res.send({ success_msg: "Felhasználó létezik!", user: userExists });
+      await account.create({
+        data: {
+          username: "admin",
+          password: encryptedPassword,
+        },
+        select: {
+          id: true,
+        },
+      });
+    } else {
+      console.log("nem jó adat!");
+    }
+    return;
+  }
 });
 
 router.put("/updateLogin/:id", async (req, res) => {

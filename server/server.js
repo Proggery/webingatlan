@@ -9,6 +9,7 @@ const adminRouter = require("./routers/adminRouter");
 const sliderRouter = require("./routers/sliderRouter");
 const aboutRouter = require("./routers/aboutRouter");
 const servicesRouter = require("./routers/servicesRouter");
+const portfolioRouter = require("./routers/portfolioRouter");
 
 require("dotenv").config();
 
@@ -24,6 +25,7 @@ app.use("", loginRouter);
 app.use("", sliderRouter);
 app.use("", aboutRouter);
 app.use("", servicesRouter);
+app.use("", portfolioRouter);
 
 app.get("/", (req, res) => {
   res.send("sikeres csatlakozás");

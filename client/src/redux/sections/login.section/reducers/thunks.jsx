@@ -3,9 +3,9 @@ import actions from "../actions/action";
 
 const messageTimer = 2800;
 
-export const loadGetData = () => (dispatch) => {
+export const loadGetData = (id) => (dispatch) => {
   DataService()
-    .getData()
+    .getData(id)
     .then((res) => {
       dispatch(actions.getData(res.data));
     })
@@ -20,7 +20,7 @@ export const loadCreateData = (data) => (dispatch) => {
     .then((res) => {
       if (res.data.user) {
         localStorage.setItem("success", true);
-        localStorage.setItem("id", res.data.user.id);
+        localStorage.setItem("userID", res.data.user.id);
       } else {
         dispatch(actions.error());
         localStorage.setItem("success", false);

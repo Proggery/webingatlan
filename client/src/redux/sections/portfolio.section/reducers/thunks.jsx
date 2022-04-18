@@ -14,6 +14,17 @@ export const loadGetData = () => (dispatch) => {
     });
 };
 
+export const loadGetCategoryData = (id) => (dispatch) => {
+  DataService()
+    .getCategoryData(id)
+    .then((res) => {
+      dispatch(actions.getCategoryData(res.data));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 export const loadCreateData = (data) => (dispatch) => {
   DataService()
     .createData(data)

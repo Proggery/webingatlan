@@ -8,6 +8,11 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         getData: payload,
       };
+    case actionType.GET_CATEGORY_DATA:
+      return {
+        ...state,
+        getCategoryData: payload,
+      };
     case actionType.CREATE_DATA:
     case actionType.UPDATE_DATA:
     case actionType.DELETE_DATA:

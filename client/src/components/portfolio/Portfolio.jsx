@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import { Box } from "@mui/material";
-import { loadGetData } from "../../redux/sections/portfolio.section/reducers/thunks";
+import { loadGetData, loadGetCategoryData } from "../../redux/sections/portfolio.section/reducers/thunks";
 import { useDispatch, useSelector } from "react-redux";
 
 import portfolio1 from "../../img/portfolio-1.jpg";
@@ -22,7 +22,8 @@ const Portfolio = () => {
     photoIndex: 0,
     isOpen: false,
   });
-  const [images, setImages] = useState();
+  const [data, setData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
   const { photoIndex, isOpen } = lightBox;
 
   const lightBoxClass = {
@@ -35,13 +36,16 @@ const Portfolio = () => {
     dispatch(loadGetData());
   }, [dispatch]);
 
+  
   useEffect(() => {
     if (getData) {
-      setImages(getData.map((item) => item.img_name));
+      setData(getData.map((item) => item.img_name));
     }
   }, [getData]);
-
-  console.log(images);
+  
+  useEffect(() => {
+    dispatch(loadGetCategoryData());
+  }, [dispatch]);
 
   return (
     <div className="container-fluid bg-light py-6 px-5">
@@ -149,22 +153,22 @@ const Portfolio = () => {
       <Box sx={{ paddingTop: "10rem" }}>
         {isOpen && (
           <Lightbox
-            mainSrcThumbnail={`${REACT_APP_BACKEND_IMAGES_URL}/portfolio/${images[photoIndex]}`}
+            mainSrcThumbnail={`${REACT_APP_BACKEND_IMAGES_URL}/portfolio/${data[photoIndex]}`}
             reactModalStyle={lightBoxClass}
-            mainSrc={`${REACT_APP_BACKEND_IMAGES_URL}/portfolio/${images[photoIndex]}`}
-            nextSrc={images[(photoIndex + 1) % images.length]}
-            prevSrc={images[(photoIndex + images.length - 1) % images.length]}
+            mainSrc={`${REACT_APP_BACKEND_IMAGES_URL}/portfolio/${data[photoIndex]}`}
+            nextSrc={data[(photoIndex + 1) % data.length]}
+            prevSrc={data[(photoIndex + data.length - 1) % data.length]}
             onCloseRequest={() => setLightBox({ ...lightBox, isOpen: false })}
             onMovePrevRequest={() =>
               setLightBox({
                 ...lightBox,
-                photoIndex: (photoIndex + images.length - 1) % images.length,
+                photoIndex: (photoIndex + data.length - 1) % data.length,
               })
             }
             onMoveNextRequest={() =>
               setLightBox({
                 ...lightBox,
-                photoIndex: (photoIndex + 1) % images.length,
+                photoIndex: (photoIndex + 1) % data.length,
               })
             }
           />

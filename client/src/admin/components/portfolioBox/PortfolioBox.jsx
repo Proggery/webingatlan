@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import * as React from "react";
+import { useEffect, useState } from "react";
 import {
+  Autocomplete,
   Box,
   Button,
   IconButton,
@@ -33,19 +35,21 @@ const PortfolioBox = () => {
   const dispatch = useDispatch();
   const { getData, message } = useSelector((state) => state.portfolio);
 
-  console.log(getData)
-
   const [data, setData] = useState({
-    portfolioTitle: "",
     portfolioBoxTitle: "",
     portfolioText: "",
     portfolioImageAlt: "",
     portfolioIconClass: "",
   });
   const [updateData, setUpdateData] = useState([]);
+  const [category, setCategory] = useState({
+    cat_id: "0",
+    label: "Egyéb kategória",
+  });
+  const [updateCategory, setUpdateCategory] = useState({});
   const [resMessage, setResMessage] = useState({});
+
   const {
-    portfolioTitle,
     portfolioBoxTitle,
     portfolioText,
     portfolioImageAlt,
@@ -61,6 +65,14 @@ const PortfolioBox = () => {
       ...data,
       getData,
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getData]);
+
+  useEffect(() => {
+    setUpdateData(
+      getData
+    );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getData]);
@@ -106,18 +118,20 @@ const PortfolioBox = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const catID = parseInt(category.cat_id);
     const formData = new FormData();
+
     formData.append("portfolioImg", data.file);
-    formData.append("portfolioTitle", portfolioTitle);
     formData.append("portfolioBoxTitle", portfolioBoxTitle);
     formData.append("portfolioText", portfolioText);
     formData.append("portfolioImageAlt", portfolioImageAlt);
     formData.append("portfolioIconClass", portfolioIconClass);
+    formData.append("portfolioCategoryName", category.label);
+    formData.append("portfolioCategoryID", catID);
 
     dispatch(loadCreateData(formData));
     dispatch(loadGetData());
     setData({
-      portfolioTitle: "",
       portfolioBoxTitle: "",
       portfolioText: "",
       portfolioImageAlt: "",
@@ -130,17 +144,19 @@ const PortfolioBox = () => {
   const handleUpdate = (e, id) => {
     e.preventDefault();
 
-    console.log(updateData);
-
+    const catID = updateData[id].category_ID;
     const formData = new FormData();
+
     formData.append("portfolioImg", updateData.file);
-    formData.append("portfolioTitle", updateData.portfolioTitle);
     formData.append("portfolioBoxTitle", updateData.portfolioBoxTitle);
     formData.append("portfolioText", updateData.portfolioText);
     formData.append("portfolioImageAlt", updateData.portfolioImageAlt);
-    formData.append("portfolioIconClass", updateData.portfolioIconClass);
-
+    formData.append("portfolioIconClass", updateCategory.portfolioIconClass);
+    formData.append("portfolioCategoryName", updateCategory.label);
+    formData.append("portfolioCategoryID", catID);
+    id = updateData[id].id
     dispatch(loadUpdateData(formData, id));
+    dispatch(loadGetData());
     setUpdateData({});
   };
 
@@ -159,6 +175,7 @@ const PortfolioBox = () => {
 
   const deleteSilderImg = (id) => {
     dispatch(loadDeleteDataImg(id));
+    setUpdateData({});
   };
 
   return (
@@ -181,45 +198,52 @@ const PortfolioBox = () => {
         noValidate
         autoComplete="off"
       >
-        <TextField
-          value={portfolioTitle}
-          onChange={handleChange}
-          {...titleProps}
-        />
-      
         <div className="configBox__content">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            {data.filename && (
-              <div>
-                {data.filename}
-                <IconButton
-                  color="primary"
-                  aria-label="delete picture"
-                  component="span"
-                  onClick={deleteFileName}
-                >
-                  <Delete />
-                </IconButton>
-              </div>
-            )}
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <label htmlFor="portfolio__img">
-              <Input
-                onChange={handleFileUpload}
-                accept="image/*"
-                id="portfolio__img"
-                type="file"
-              />
+          {data.filename ? (
+            <Stack direction="row" alignItems="center" spacing={2}>
+              {data.filename}
               <IconButton
                 color="primary"
-                aria-label="upload picture"
+                aria-label="delete picture"
                 component="span"
+                onClick={deleteFileName}
               >
-                <PhotoCamera />
+                <Delete />
               </IconButton>
-            </label>
-          </Stack>
+              <Autocomplete
+                defaultValue={
+                  (category && category.portfolioCategoryName) || null
+                }
+                onChange={(event, newValue) => {
+                  setCategory(newValue);
+                }}
+                id="controllable-states-demo"
+                options={categories}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Kategóriák" />
+                )}
+              />
+            </Stack>
+          ) : (
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <label htmlFor="portfolio__img">
+                <Input
+                  onChange={handleFileUpload}
+                  accept="image/*"
+                  id="portfolio__img"
+                  type="file"
+                />
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+            </Stack>
+          )}
 
           <TextField
             value={portfolioImageAlt}
@@ -251,11 +275,11 @@ const PortfolioBox = () => {
         data.getData.map((item, key) => (
           <Box
             component="form"
-            onSubmit={(e) => handleUpdate(e, item.id)}
+            onSubmit={(e) => handleUpdate(e, key)}
             method="PUT"
             noValidate
             autoComplete="off"
-            key={item.id}
+            key={key}
           >
             <div className="configBox__content">
               {item.img_name ? (
@@ -272,27 +296,57 @@ const PortfolioBox = () => {
                     onClick={() => deleteSilderImg(item.id)}
                   >
                     <Delete />
-                  </IconButton>{" "}
+                  </IconButton>
+
+                  <Autocomplete
+                    defaultValue={
+                      (updateCategory &&
+                        updateCategory.portfolioCategoryName) ||
+                      null
+                    }
+                    onChange={(event, newValue) => {
+                      setUpdateCategory(newValue);
+                    }}
+                    id="controllable-states-demo"
+                    options={categories}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label={item.category_name} />
+                    )}
+                  />
                 </>
               ) : (
                 <>
+                  {console.log(updateData)}
+
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    {updateData && updateData.id === key ? (
-                      <div>
-                        {updateData.filename}
-                        <IconButton
-                          color="primary"
-                          aria-label="delete picture"
-                          component="span"
-                          onClick={deleteFileName}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                    {updateData.filename}
+                    <IconButton
+                      color="primary"
+                      aria-label="delete picture"
+                      component="span"
+                      onClick={deleteFileName}
+                    >
+                      <Delete />
+                    </IconButton>
+                    <Autocomplete
+                      defaultValue={
+                        (updateCategory &&
+                          updateCategory.portfolioCategoryName) ||
+                        null
+                      }
+                      onChange={(event, newValue) => {
+                        setUpdateCategory(newValue);
+                      }}
+                      id="controllable-states-demo"
+                      options={categories}
+                      sx={{ width: 300 }}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Kategóriák" />
+                      )}
+                    />
                   </Stack>
+
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <label htmlFor={`portfolio__${key}`}>
                       <Input
@@ -349,3 +403,10 @@ const PortfolioBox = () => {
 };
 
 export default PortfolioBox;
+
+const categories = [
+  { cat_id: "0", label: "Egyéb kategória" },
+  { cat_id: "1", label: "Kutya" },
+  { cat_id: "2", label: "Macska" },
+  { cat_id: "3", label: "Papagáj" },
+];

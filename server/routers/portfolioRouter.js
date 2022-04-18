@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
-const { portfolio } = new PrismaClient();
+const { portfolio, portfolioCategory } = new PrismaClient();
 const multer = require("multer");
 const images = multer({ dest: "uploads/images/portfolio/" });
 const { rename, unlink } = require("fs");
@@ -13,9 +13,11 @@ router.get("/getPortfolio", async (req, res) => {
       title: true,
       box_title: true,
       text: true,
+      icon_class: true,
       img_name: true,
       img_alt: true,
-      icon_class: true,
+      category_name: true,
+      category_ID: true,
     },
   });
   res.status(200).send(getData);
@@ -25,12 +27,14 @@ router.post(
   "/createPortfolio",
   images.single("portfolioImg"),
   async (req, res) => {
-    const {
+    let {
       portfolioTitle,
       portfolioBoxTitle,
       portfolioText,
       portfolioImageAlt,
       portfolioIconClass,
+      portfolioCategoryName,
+      portfolioCategoryID,
     } = req.body;
 
     if (
@@ -43,34 +47,54 @@ router.post(
     ) {
       return res.send({ error_message: "nincs adat kiválasztva!" });
     } else {
-      let fileType = req.file.mimetype.split("/")[1];
+      let newFileName;
 
-      if (fileType === "svg+xml") {
-        fileType = fileType.split("+")[0];
+      if (req.file) {
+        let fileType = req.file.mimetype.split("/")[1];
+
+        if (fileType === "svg+xml") {
+          fileType = fileType.split("+")[0];
+        }
+
+        newFileName = req.file.filename + "." + fileType;
+
+        rename(
+          `uploads/images/portfolio/${req.file.filename}`,
+          `uploads/images/portfolio/${newFileName}`,
+          (err) => {
+            if (err) throw err;
+            console.log("Sikeres kép név csere!");
+          }
+        );
       }
 
-      let newFileName = req.file.filename + "." + fileType;
+      portfolioCategoryID = parseInt(portfolioCategoryID);
 
-      rename(
-        `uploads/images/portfolio/${req.file.filename}`,
-        `uploads/images/portfolio/${newFileName}`,
-        (err) => {
-          if (err) throw err;
-          console.log("Sikeres kép név csere!");
-        }
-      );
-
-      await portfolio.create({
-        data: {
-          title: portfolioTitle,
-          box_title: portfolioBoxTitle,
-          text: portfolioText,
-          img_name: newFileName,
-          img_alt: portfolioImageAlt,
-          icon_class: portfolioIconClass,
-        },
-      });
-
+      if (portfolioCategoryName !== undefined) {
+        await portfolio.create({
+          data: {
+            title: portfolioTitle,
+            box_title: portfolioBoxTitle,
+            text: portfolioText,
+            icon_class: portfolioIconClass,
+            img_name: newFileName,
+            img_alt: portfolioImageAlt,
+            category_ID: portfolioCategoryID,
+            category_name: portfolioCategoryName,
+          },
+        });
+      } else {
+        await portfolio.create({
+          data: {
+            title: portfolioTitle,
+            box_title: portfolioBoxTitle,
+            text: portfolioText,
+            icon_class: portfolioIconClass,
+            img_name: newFileName,
+            img_alt: portfolioImageAlt,
+          },
+        });
+      }
       res.send({ success_msg: "Szolgáltatás létrehozva!" });
     }
   }
@@ -80,13 +104,16 @@ router.put(
   "/updatePortfolio/:id",
   images.single("portfolioImg"),
   async (req, res) => {
-    const id = parseInt(req.params.id);
-    const {
+    const id = req.params.id;
+
+    let {
       portfolioTitle,
       portfolioBoxTitle,
       portfolioText,
       portfolioImageAlt,
       portfolioIconClass,
+      portfolioCategoryName,
+      portfolioCategoryID,
     } = req.body;
 
     if (req.file !== undefined) {
@@ -117,7 +144,9 @@ router.put(
       portfolioBoxTitle === "undefined" &&
       portfolioText === "undefined" &&
       portfolioImageAlt === "undefined" &&
-      portfolioIconClass === "undefined"
+      portfolioIconClass === "undefined" &&
+      portfolioCategoryName === "undefined" &&
+      portfolioCategoryID === "undefined"
     ) {
       return res.send({ error_msg: "A portfolio nem módosult!" });
     } else {
@@ -151,13 +180,27 @@ router.put(
           data: { title: portfolioIconClass },
         });
       }
+      if (portfolioCategoryName !== "undefined") {
+        await portfolio.update({
+          where: { id: id },
+          data: { category_name: portfolioCategoryName },
+        });
+      }
+      portfolioCategoryID = parseInt(portfolioCategoryID);
+
+      if (portfolioCategoryID !== NaN) {
+        await portfolio.update({ 
+          where: { id: id },
+          data: { category_ID: portfolioCategoryID },
+        });
+      }
       res.send({ success_msg: "Portfolio módosítva!" });
     }
   }
 );
 
 router.put("/deletePortfolioImg/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
 
   const portfolioImgName = await portfolio.findUnique({
     where: { id: id },
@@ -173,7 +216,7 @@ router.put("/deletePortfolioImg/:id", async (req, res) => {
 
   await portfolio.update({
     where: { id: id },
-    data: { img_name: "", img_alt: "" },
+    data: { img_name: "", img_alt: "", category_name: "", category_ID: 0 },
   });
   res.send({ success_msg: "Kép törölve!" });
 });

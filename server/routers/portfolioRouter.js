@@ -11,7 +11,6 @@ router.get("/getPortfolio", async (req, res) => {
     select: {
       id: true,
       title: true,
-      box_title: true,
       text: true,
       icon_class: true,
       img_name: true,
@@ -22,6 +21,36 @@ router.get("/getPortfolio", async (req, res) => {
   });
   res.status(200).send(getData);
 });
+router.get("/getCategory/:id", async (req, res) => {
+  let id = parseInt(req.params.id);
+  let category;
+  
+  if (id) {
+    category = await portfolio.findMany({
+      where: {
+        category_ID: id,
+      },
+      select: {
+        title: true,
+        text: true,
+        img_name: true,
+        img_alt: true,
+      },
+    });
+  }
+
+  const categoryMenuItems = await portfolio.findMany({
+    distinct: ["category_name"],
+    select: {
+      category_name: true,
+    },
+    orderBy: {
+      date: "asc",
+    },
+  });
+
+  res.status(200).send({ category, categoryMenuItems });
+});
 
 router.post(
   "/createPortfolio",
@@ -29,7 +58,6 @@ router.post(
   async (req, res) => {
     let {
       portfolioTitle,
-      portfolioBoxTitle,
       portfolioText,
       portfolioImageAlt,
       portfolioIconClass,
@@ -39,7 +67,6 @@ router.post(
 
     if (
       !portfolioTitle &&
-      !portfolioBoxTitle &&
       !portfolioText &&
       !portfolioImageAlt &&
       !portfolioIconClass &&
@@ -74,7 +101,6 @@ router.post(
         await portfolio.create({
           data: {
             title: portfolioTitle,
-            box_title: portfolioBoxTitle,
             text: portfolioText,
             icon_class: portfolioIconClass,
             img_name: newFileName,
@@ -87,7 +113,6 @@ router.post(
         await portfolio.create({
           data: {
             title: portfolioTitle,
-            box_title: portfolioBoxTitle,
             text: portfolioText,
             icon_class: portfolioIconClass,
             img_name: newFileName,
@@ -106,9 +131,11 @@ router.put(
   async (req, res) => {
     const id = req.params.id;
 
+    console.log(id);
+    console.log(req.body);
+
     let {
       portfolioTitle,
-      portfolioBoxTitle,
       portfolioText,
       portfolioImageAlt,
       portfolioIconClass,
@@ -141,7 +168,6 @@ router.put(
 
     if (
       portfolioTitle === "undefined" &&
-      portfolioBoxTitle === "undefined" &&
       portfolioText === "undefined" &&
       portfolioImageAlt === "undefined" &&
       portfolioIconClass === "undefined" &&
@@ -154,12 +180,6 @@ router.put(
         await portfolio.update({
           where: { id: id },
           data: { title: portfolioTitle },
-        });
-      }
-      if (portfolioBoxTitle !== "undefined") {
-        await portfolio.update({
-          where: { id: id },
-          data: { title: portfolioBoxTitle },
         });
       }
       if (portfolioText !== "undefined") {
@@ -180,20 +200,24 @@ router.put(
           data: { title: portfolioIconClass },
         });
       }
+
+      portfolioCategoryID = parseInt(portfolioCategoryID);
+
+      console.log(portfolioCategoryID);
       if (portfolioCategoryName !== "undefined") {
         await portfolio.update({
           where: { id: id },
           data: { category_name: portfolioCategoryName },
         });
       }
-      portfolioCategoryID = parseInt(portfolioCategoryID);
 
       if (portfolioCategoryID !== NaN) {
-        await portfolio.update({ 
+        await portfolio.update({
           where: { id: id },
           data: { category_ID: portfolioCategoryID },
         });
       }
+
       res.send({ success_msg: "Portfolio módosítva!" });
     }
   }

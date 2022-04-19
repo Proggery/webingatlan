@@ -8,79 +8,82 @@ datasource db {
 }
 
 model About {
-  id       String  @id @default(uuid())
-  title    String? @db.VarChar(255)
-  subtitle String? @db.VarChar(255)
-  text     String? @db.VarChar(500)
-  text2    String? @db.VarChar(500)
-  img_name String? @db.VarChar(255)
-  img_alt  String? @db.VarChar(255)
+  id       String   @id @default(uuid())
+  title    String?  @db.VarChar(255)
+  subtitle String?  @db.VarChar(255)
+  text     String?  @db.VarChar(500)
+  text2    String?  @db.VarChar(500)
+  img_name String?  @db.VarChar(255)
+  img_alt  String?  @db.VarChar(255)
+  date     DateTime @default(now())
 
   @@map("about")
 }
 
 model AboutListing {
-  id    String  @id @default(uuid())
-  title String? @db.VarChar(255)
+  id    String   @id @default(uuid())
+  title String?  @db.VarChar(255)
+  date  DateTime @default(now())
 
   @@map("about_listing")
 }
 
 model Account {
-  id       String  @id @default(uuid())
-  password String? @db.VarChar(64)
-  username String? @unique(map: "username") @db.VarChar(255)
+  id       String   @id @default(uuid())
+  password String?  @db.VarChar(64)
+  username String?  @unique(map: "username") @db.VarChar(255)
+  date     DateTime @default(now())
 
-    @@map("account")
-
+  @@map("account")
 }
 
 model Admin {
-  id        String  @id @default(uuid())
-  firstname String  @db.VarChar(255)
-  lastname  String  @db.VarChar(255)
-  company   String? @db.VarChar(255)
-  address   String? @db.VarChar(255)
-  phone     String? @db.VarChar(255)
-  email     String? @db.VarChar(255)
+  id        String   @id @default(uuid())
+  firstname String   @db.VarChar(255)
+  lastname  String   @db.VarChar(255)
+  company   String?  @db.VarChar(255)
+  address   String?  @db.VarChar(255)
+  phone     String?  @db.VarChar(255)
+  email     String?  @db.VarChar(255)
+  date      DateTime @default(now())
 
-    @@map("admin")
-
+  @@map("admin")
 }
 
 model Slider {
-  id       String  @id @default(uuid())
-  title    String? @db.VarChar(255)
-  img_name String? @db.VarChar(255)
-  img_alt  String? @db.VarChar(255)
+  id       String   @id @default(uuid())
+  title    String?  @db.VarChar(255)
+  img_name String?  @db.VarChar(255)
+  img_alt  String?  @db.VarChar(255)
+  date     DateTime @default(now())
 
-    @@map("slider")
-
+  @@map("slider")
 }
 
 model Services {
-  id         String  @id @default(uuid())
-  title      String? @db.VarChar(255)
-  box_title  String? @db.VarChar(255)
-  text       String? @db.VarChar(255)
-  img_name   String? @db.VarChar(255)
-  img_alt    String? @db.VarChar(255)
-  icon_class String  @db.VarChar(255)
+  id         String   @id @default(uuid())
+  title      String?  @db.VarChar(255)
+  box_title  String?  @db.VarChar(255)
+  text       String?  @db.VarChar(255)
+  img_name   String?  @db.VarChar(255)
+  img_alt    String?  @db.VarChar(255)
+  icon_class String   @db.VarChar(255)
+  date       DateTime @default(now())
 
-    @@map("services")
 
+  @@map("services")
 }
 
 model Portfolio {
-  id                  String  @id @default(uuid())
-  title               String? @db.VarChar(255)
-  box_title           String? @db.VarChar(255)
-  text                String? @db.VarChar(255)
-  icon_class          String? @db.VarChar(255)
-  img_name            String? @db.VarChar(255)
-  img_alt             String? @db.VarChar(255)
-  category_name       String? @db.VarChar(255)
-  category_ID         Int?
+  id            String   @id @default(uuid())
+  title         String?  @db.VarChar(255)
+  text          String?  @db.VarChar(255)
+  icon_class    String?  @db.VarChar(255)
+  img_name      String?  @db.VarChar(255)
+  img_alt       String?  @db.VarChar(255)
+  category_name String?  @db.VarChar(255)
+  category_ID   Int?
+  date          DateTime @default(now())
 
   @@map("portfolio")
 }

@@ -4,9 +4,13 @@ const getData = (getData) => ({
   type: actionType.GET_DATA,
   payload: getData,
 });
-const getCategoryData = (getCategoryData) => ({
-  type: actionType.GET_CATEGORY_DATA,
-  payload: getCategoryData,
+const getCategory = (getCategory) => ({
+  type: actionType.GET_CATEGORY,
+  payload: getCategory,
+});
+const getCategoryMenuItems = (getCategoryMenuItems) => ({
+  type: actionType.GET_CATEGORY_MENU_ITEMS,
+  payload: getCategoryMenuItems,
 });
 const createData = () => ({
   type: actionType.CREATE_DATA,
@@ -21,7 +25,8 @@ const message = (message) => ({
 
 const actions = {
   getData,
-  getCategoryData,
+  getCategory,
+  getCategoryMenuItems,
   createData,
   updateData,
   message,

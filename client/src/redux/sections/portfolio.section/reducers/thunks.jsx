@@ -14,11 +14,15 @@ export const loadGetData = () => (dispatch) => {
     });
 };
 
-export const loadGetCategoryData = (id) => (dispatch) => {
+export const loadGetCategory = (id) => (dispatch) => {
   DataService()
-    .getCategoryData(id)
+    .getCategory(id)
     .then((res) => {
-      dispatch(actions.getCategoryData(res.data));
+      let category = res.data.category;
+      let categoryMenuItems = res.data.categoryMenuItems;
+
+      dispatch(actions.getCategory(category));
+      dispatch(actions.getCategoryMenuItems(categoryMenuItems));
     })
     .catch((err) => {
       console.log(err);

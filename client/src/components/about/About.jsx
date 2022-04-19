@@ -74,13 +74,13 @@ const About = () => {
         </div>
         <div className="col-lg-5 pb-5" style={{ minHeight: "400px" }}>
           <div className="position-relative bg-dark-radial h-100 ms-5">
-            <img
+            {getData && <img
               className="position-absolute w-100 h-100 mt-5 ms-n5"
               src={`${REACT_APP_BACKEND_IMAGES_URL}/about/${
-                getData && getData.img_name
+                 getData.img_name
               }`}
               style={{ objectFit: "cover" }}
-            />
+            />}
           </div>
         </div>
       </div>

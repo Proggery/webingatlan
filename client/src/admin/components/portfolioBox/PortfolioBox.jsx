@@ -19,7 +19,6 @@ import {
 } from "../../../redux/sections/portfolio.section/reducers/thunks";
 import {
   titleProps,
-  boxTitleProps,
   textProps,
   altProps,
   iconProps,
@@ -36,7 +35,7 @@ const PortfolioBox = () => {
   const { getData, message } = useSelector((state) => state.portfolio);
 
   const [data, setData] = useState({
-    portfolioBoxTitle: "",
+    portfolioTitle: "",
     portfolioText: "",
     portfolioImageAlt: "",
     portfolioIconClass: "",
@@ -50,7 +49,7 @@ const PortfolioBox = () => {
   const [resMessage, setResMessage] = useState({});
 
   const {
-    portfolioBoxTitle,
+    portfolioTitle,
     portfolioText,
     portfolioImageAlt,
     portfolioIconClass,
@@ -118,21 +117,20 @@ const PortfolioBox = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const catID = parseInt(category.cat_id);
     const formData = new FormData();
 
     formData.append("portfolioImg", data.file);
-    formData.append("portfolioBoxTitle", portfolioBoxTitle);
+    formData.append("portfolioTitle", portfolioTitle);
     formData.append("portfolioText", portfolioText);
     formData.append("portfolioImageAlt", portfolioImageAlt);
     formData.append("portfolioIconClass", portfolioIconClass);
     formData.append("portfolioCategoryName", category.label);
-    formData.append("portfolioCategoryID", catID);
+    formData.append("portfolioCategoryID", category.cat_id);
 
     dispatch(loadCreateData(formData));
     dispatch(loadGetData());
     setData({
-      portfolioBoxTitle: "",
+      portfolioTitle: "",
       portfolioText: "",
       portfolioImageAlt: "",
       portfolioIconClass: "",
@@ -144,17 +142,18 @@ const PortfolioBox = () => {
   const handleUpdate = (e, id) => {
     e.preventDefault();
 
-    const catID = updateData[id].category_ID;
     const formData = new FormData();
 
+    console.log(id)
+
     formData.append("portfolioImg", updateData.file);
-    formData.append("portfolioBoxTitle", updateData.portfolioBoxTitle);
+    formData.append("portfolioTitle", updateData.portfolioTitle);
     formData.append("portfolioText", updateData.portfolioText);
     formData.append("portfolioImageAlt", updateData.portfolioImageAlt);
-    formData.append("portfolioIconClass", updateCategory.portfolioIconClass);
+    formData.append("portfolioIconClass", updateData.portfolioIconClass);
     formData.append("portfolioCategoryName", updateCategory.label);
-    formData.append("portfolioCategoryID", catID);
-    id = updateData[id].id
+    formData.append("portfolioCategoryID", updateCategory.cat_id);
+
     dispatch(loadUpdateData(formData, id));
     dispatch(loadGetData());
     setUpdateData({});
@@ -252,9 +251,9 @@ const PortfolioBox = () => {
           />
 
           <TextField
-            value={portfolioBoxTitle}
+            value={portfolioTitle}
             onChange={handleChange}
-            {...boxTitleProps}
+            {...titleProps}
           />
           <TextField
             value={portfolioText}
@@ -275,11 +274,11 @@ const PortfolioBox = () => {
         data.getData.map((item, key) => (
           <Box
             component="form"
-            onSubmit={(e) => handleUpdate(e, key)}
+            onSubmit={(e) => handleUpdate(e, item.id)}
             method="PUT"
             noValidate
             autoComplete="off"
-            key={key}
+            key={item.id}
           >
             <div className="configBox__content">
               {item.img_name ? (
@@ -377,11 +376,6 @@ const PortfolioBox = () => {
                 defaultValue={item.title}
                 onChange={handleUpdateChange}
                 {...titleProps}
-              />
-              <TextField
-                defaultValue={item.box_title}
-                onChange={handleUpdateChange}
-                {...boxTitleProps}
               />
               <TextField
                 defaultValue={item.text}

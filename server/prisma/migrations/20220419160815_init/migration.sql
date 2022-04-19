@@ -69,11 +69,11 @@ CREATE TABLE `services` (
 CREATE TABLE `portfolio` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(255) NULL,
-    `box_title` VARCHAR(255) NULL,
     `text` VARCHAR(255) NULL,
     `icon_class` VARCHAR(255) NULL,
     `img_name` VARCHAR(255) NULL,
     `img_alt` VARCHAR(255) NULL,
+    `category_name` VARCHAR(255) NULL,
     `category_ID` INTEGER NULL,
 
     PRIMARY KEY (`id`)

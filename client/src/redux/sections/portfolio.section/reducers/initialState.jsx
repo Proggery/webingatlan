@@ -1,7 +1,8 @@
 const initialState = () => {
   return {
     getData: [],
-    getCategoryData: [],
+    getCategory: [],
+    getCategorygetCategoryMenuItems: [],
     message: {},
   };
 };

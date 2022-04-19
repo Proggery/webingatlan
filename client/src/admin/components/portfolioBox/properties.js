@@ -1,11 +1,6 @@
 export const titleProps = {
-  label: "szekció cím",
-  name: "portfolioTitle",
-  variant: "standard",
-};
-export const boxTitleProps = {
   label: "portfólió cím",
-  name: "portfolioBoxTitle",
+  name: "portfolioTitle",
   variant: "standard",
 };
 export const textProps = {

@@ -25,11 +25,6 @@ const Portfolio = () => {
 
   const [changeCategory, setChangeCategory] = useState(false);
 
-  // if (resCategory == 'undefined') {
-  //   localStorage.removeItem("resultCategory");
-  //   resCategory = null;
-  // }
-
   useEffect(() => {
     dispatch(loadGetData());
   }, [dispatch]);
@@ -50,18 +45,6 @@ const Portfolio = () => {
     setCategoryMenuItems(getCategoryMenuItems);
   }, [getCategoryMenuItems]);
 
-  const allCategory = () => {
-    localStorage.removeItem("resultCategory");
-    setChangeCategory(false);
-    dispatch(loadGetCategory());
-  };
-
-  const filterResults = (id) => {
-    setChangeCategory(true);
-    dispatch(loadGetCategory(id + 1));
-    dispatch(loadGetData());
-  };
-
   if (getCategory !== undefined) {
     let ObjToString = JSON.stringify(getCategory);
     localStorage.setItem("resultCategory", ObjToString);
@@ -69,6 +52,23 @@ const Portfolio = () => {
 
   let stringObj = localStorage.getItem("resultCategory");
   let resCategory = JSON.parse(stringObj);
+
+  const allCategory = () => {
+    setChangeCategory(!setCategory);
+    localStorage.removeItem("resultCategory");
+    dispatch(loadGetCategory());
+  };
+
+  const filterResults = (id) => {
+    console.log(id)
+    setChangeCategory(!setCategory);
+    dispatch(loadGetCategory(id));
+    dispatch(loadGetData());
+  };
+
+
+  
+  console.log(data);
 
   return (
     <div className="container-fluid bg-light py-6 px-5">
@@ -104,7 +104,7 @@ const Portfolio = () => {
                     key={key}
                     className="btn btn-outline-primary bg-white p-2 active mx-2 mb-4"
                     data-filter="*"
-                    onClick={() => filterResults(key)}
+                    onClick={() => filterResults(item.category_ID)}
                   >
                     <img
                       src={portfolio1}
@@ -124,7 +124,7 @@ const Portfolio = () => {
           </div>
         </div>
       </div>
-      {changeCategory ? (
+      {resCategory ? (
         <Categories category={resCategory} />
       ) : (
         <Categories category={data} />

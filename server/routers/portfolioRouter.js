@@ -43,6 +43,7 @@ router.get("/getCategory/:id", async (req, res) => {
     distinct: ["category_name"],
     select: {
       category_name: true,
+      category_ID: true
     },
     orderBy: {
       date: "asc",
